@@ -15,4 +15,14 @@ public class UsuarioService {
             new Usuario(2L, "pepe", "pepe@email.com")
         );
     }
+
+
+    public Usuario obtenerUsuario(Long id){
+        for (Usuario usuario : obtenerUsuarios()){
+            if (usuario.getId().equals(id)){
+                return usuario;
+            }
+        }
+        return null;
+    }
 }

@@ -20,10 +20,7 @@ public class UsuarioService {
     }
     
     public List<Usuario> obtenerUsuarios() {
-        return List.of(
-            new Usuario(1L, "david", "david@email.com"),
-            new Usuario(2L, "pepe", "pepe@email.com")
-        );
+        return usuarioRepository.findAll();
     }
 
 
@@ -38,10 +35,34 @@ public class UsuarioService {
     }
 
 
-    public Usuario crearUsuario(Usuario usuario) {
-    // Simulación: asignamos un id fijo
-    usuario.setId(3L);
-    return usuario;
+    public Usuario crearUsuario(Usuario usuario) {    
+    return usuarioRepository.save(usuario);
+}
+
+
+public void eliminarUsuario(Long id) {
+    if (!usuarioRepository.existsById(id)) {
+        throw new ResponseStatusException(
+            HttpStatus.NOT_FOUND,
+            "Usuario no encontrado"
+        );
+    }
+        usuarioRepository.deleteById(id);
+}
+
+
+public Usuario actualizarUsuario(Long id, Usuario datosNuevos) {
+
+    Usuario usuarioExistente = usuarioRepository.findById(id)
+            .orElseThrow(() -> new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "Usuario no encontrado"
+            ));
+
+    usuarioExistente.setNick(datosNuevos.getNick());
+    usuarioExistente.setEmail(datosNuevos.getEmail());
+
+    return usuarioRepository.save(usuarioExistente);
 }
 
 }

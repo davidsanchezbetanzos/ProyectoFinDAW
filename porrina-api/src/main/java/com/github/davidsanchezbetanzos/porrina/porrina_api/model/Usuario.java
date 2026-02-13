@@ -10,15 +10,27 @@ import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
+
+
+
 
 
 //Clase Java para usuario
 @Entity //marcamos esta clase como una entidad (tabla) en la base de datos
 public class Usuario {
 
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
+
+//relacion con entidad Equipo
+@ManyToOne
+@JoinColumn(name = "equipo_id")
+private Equipo equipo;
 
     @NotBlank(message = "El nick es obligatorio")
     private String nick;
@@ -57,6 +69,12 @@ public class Usuario {
         return email;
     }
 
+    public Equipo getEquipo() {
+    return equipo;
+}
+
+
+
         // Setters 
     public void setId(Long id) {
         this.id = id;
@@ -69,5 +87,9 @@ public class Usuario {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public void setEquipo(Equipo equipo) {
+    this.equipo = equipo;
+}
 
 }

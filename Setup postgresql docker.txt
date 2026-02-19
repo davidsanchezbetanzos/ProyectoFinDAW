@@ -1,0 +1,9 @@
+docker run --name porrina-postgresql \
+  -e POSTGRES_DB=porrina \
+  -e POSTGRES_USER=davs \
+  -e POSTGRES_PASSWORD=**** \
+  -p 5432:5432 \
+  -v porrina-data:/var/lib/postgresql/data \
+  -d postgres:16
+
+  docker ps

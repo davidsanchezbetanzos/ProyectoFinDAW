@@ -1,0 +1,8 @@
+<h2>Listado de Usuarios</h2>
+
+<p *ngIf="usuarios.length === 0">No hay usuarios</p>
+
+<li *ngFor="let usuario of usuarios">
+    {{ usuario.nick }} - {{ usuario.email }}
+  </li>
+

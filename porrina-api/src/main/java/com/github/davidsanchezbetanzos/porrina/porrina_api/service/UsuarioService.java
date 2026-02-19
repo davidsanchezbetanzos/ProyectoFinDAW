@@ -38,6 +38,13 @@ public class UsuarioService {
 
             Long equipoId = usuario.getEquipo().getId();
 
+            if (usuarioRepository.existsByEmail(usuario.getEmail())) {
+        throw new ResponseStatusException(
+                HttpStatus.CONFLICT,
+                "Ya existe un usuario con ese email"
+        );
+    }
+
             if (equipoId == null || !equipoRepository.existsById(equipoId)) {
                 throw new ResponseStatusException(
                         HttpStatus.NOT_FOUND,
@@ -72,6 +79,13 @@ public class UsuarioService {
                         "El equipo especificado no existe");
 
             }
+//validacion de que no se cambia el mail a 1 ya existente. comprueba que el email proporcionado no este en bd (a no ser que no lo estamos cambiando)
+            if (!usuarioExistente.getEmail().equals(datosNuevos.getEmail()) && usuarioRepository.existsByEmail(datosNuevos.getEmail())) {
+        throw new ResponseStatusException(
+                HttpStatus.CONFLICT,
+                "Ya existe un usuario con ese email"
+        );
+    }
 
             usuarioExistente.setEquipo(datosNuevos.getEquipo());
 

@@ -3,6 +3,7 @@ package com.github.davidsanchezbetanzos.porrina.porrina_api.controller;
 import com.github.davidsanchezbetanzos.porrina.porrina_api.model.Usuario;
 import com.github.davidsanchezbetanzos.porrina.porrina_api.service.UsuarioService;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 //marcadores de spring
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +28,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import jakarta.validation.Valid;
 
+//CORS
+@CrossOrigin(origins = "http://localhost:4200")
 
 //-- ENDPOINTS
 

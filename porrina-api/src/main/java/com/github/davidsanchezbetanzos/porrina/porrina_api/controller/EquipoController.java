@@ -2,6 +2,7 @@ package com.github.davidsanchezbetanzos.porrina.porrina_api.controller;
 
 
 import com.github.davidsanchezbetanzos.porrina.porrina_api.model.Equipo;
+import com.github.davidsanchezbetanzos.porrina.porrina_api.model.Usuario;
 import com.github.davidsanchezbetanzos.porrina.porrina_api.service.EquipoService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -31,6 +32,11 @@ public EquipoController(EquipoService equipoService) {
     public Equipo obtenerEquipo(@PathVariable Long id) {
         return equipoService.obtenerEquipo(id);
     }
+
+    @GetMapping("/{id}/usuarios")
+public List<Usuario> obtenerUsuariosDeEquipo(@PathVariable Long id) {
+    return equipoService.obtenerUsuariosDeEquipo(id);
+}
 
 
      @PostMapping

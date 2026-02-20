@@ -1,0 +1,25 @@
+Reglas negocio
+
+Los usuarios pueden ser o no administradores. Los administradores no pueden crear pronósticos pero pueden crear partidos, jornadas y modificar resultados. 
+
+Cada Jornada tiene siempre 3 partidos. La jornada se crea con los partidos sin resultados. Mientras no tenga resultados se considera jornada activa.
+
+Cada usuario puede crear un (solo 1) Pronóstico para la jornada activa. El pronóstico debe tener los 3 resultados (goles local y goles visitante) y la columna con resultado-quiniela 1X2 se generaría automáticamente.
+
+Cuando se juegan los partidos, un administrador edita la jornada y define los 3 resultados. Esto debe pasar el estado de la jornada a "jornada jugada", lo que genera también el resultado-quiniela de los partidos (1 para victoria local, 2 para victoria visitante y X para empate) Algún resultado puede quedar sin definir si el partido se suspende.
+
+Los puntos que gana cada usuario se calculan al comparar los resultados del Pronóstico con los de los resultados definidos de la jornada jugada de la siguiente manera:
+	- Por cada acierto de resultado exacto: 4 puntos
+	- Por cada acierto de resultado-quiniela 1X2: 1 PUNTO
+	
+Si el usuario no creó ningún pronóstico o no acierta, no suma puntos.
+
+Debe haber un componente para la vista de clasificación individual
+Debe haber un componente para la vista de clasificación por equipo. La puntuación de los equipos es la suma de la puntuación de sus componentes.
+Debe haber un componente para la vista de las bases e información general. Será información mayormente estática.
+
+Debe haber un componente para crear pronósticos de la jornada activa (el usuario debe estar logueado y no ser administrador)
+Debe haber un componente para crear jornadas futuras (el usuario debe ser administrador)
+Debe haber un componente para definir los resultados de la jornada activa.(el usuario debe ser administrador)
+Debe haber un componente para crear equipos (en principio lo haremos público)
+Debe haber un componente para crear usuarios (en principio lo haremos público)

@@ -7,8 +7,7 @@ Table usuario {
   nick varchar
   email varchar
   admin boolean
-  equipo_id bigint [ref: > equipo.id]
-  puntos bigint
+  equipo_id bigint [ref: > equipo.id]  
 }
 
 Table equipo {
@@ -20,9 +19,8 @@ Table jornada {
   id bigint [pk]
   fechaini timestamp
   fechafin timestamp
-  id_partido1 bigint [ref: > partido.id]
-  id_partido2 bigint [ref: > partido.id]
-  id_partido3 bigint [ref: > partido.id]
+  estado varchar
+ 
 }
 
 Table partido {
@@ -39,13 +37,13 @@ Table pronostico {
 id bigint [pk]
 id_usuario bigint  [ref: > usuario.id]
 id_jornada bigint  [ref: > jornada.id]
-goleslocal_partido1 bigint
-golesvisitante_partido1 bigint
-goleslocal_partido2 bigint
-golesvisitante_partido2 bigint
-goleslocal_partido3 bigint
-golesvisitante_partido3 bigint
-quiniela_partido1 varchar
-quiniela_partido2 varchar
-quiniela_partido3 varchar
+}
+
+Table pronostico_partido{
+  id bigint [pk]
+  id_pronostico bigint [ref: > pronostico.id]
+  id_partido bigint [ref: > partido.id]
+  goleslocal bigint
+  golesvisitante bigint
+  quiniela varchar
 }

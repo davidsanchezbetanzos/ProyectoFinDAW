@@ -63,6 +63,7 @@ public class UsuarioController {
 
 //-- POST USUARIO /api/usuarios/ (EN EL BODY VA EL USUARIO)
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public Usuario crearUsuario(@Valid @RequestBody Usuario usuario) {
         return usuarioService.crearUsuario(usuario);
     }

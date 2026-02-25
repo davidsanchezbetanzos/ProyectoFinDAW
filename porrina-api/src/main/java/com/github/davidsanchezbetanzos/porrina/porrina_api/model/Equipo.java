@@ -8,6 +8,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+
+import java.util.ArrayList;
 import java.util.List;
 
 //import para fix de json infinito (quitar cuando implementemos DTO)
@@ -15,6 +18,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 //Clase Java para usuario
 @Entity // marcamos esta clase como una entidad (tabla) en la base de datos
+@Table(name = "Equipo")
 public class Equipo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +29,7 @@ public class Equipo {
 
     @JsonIgnore //quitar cuando implementemos DTO
     @OneToMany(mappedBy = "equipo")
-    private List<Usuario> usuarios;
+    private List<Usuario> usuarios = new ArrayList<>();
 
     
 

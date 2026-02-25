@@ -9,17 +9,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
     private final EquipoRepository equipoRepository;
+    private final PronosticoService pronosticoService;
 
     public UsuarioService(UsuarioRepository usuarioRepository,
-            EquipoRepository equipoRepository) {
+            EquipoRepository equipoRepository, PronosticoService pronosticoService) {
         this.usuarioRepository = usuarioRepository;
         this.equipoRepository = equipoRepository;
+        this.pronosticoService = pronosticoService;
     }
 
     public List<Usuario> obtenerUsuarios() {
@@ -101,6 +104,25 @@ public class UsuarioService {
             return usuarioRepository.save(usuarioExistente);
         
 
+    }
+
+
+    // Método para obtener la clasificación
+    public List<Usuario> obtenerClasificacion() {
+        List<Usuario> usuarios = usuarioRepository.findAll();
+
+        // Calculamos los puntos para cada usuario
+        for (Usuario u : usuarios) {
+            int puntos = pronosticoService.calcularPuntosTotalesUsuario(u.getId());
+            u.setPuntos(puntos); // Seteamos el valor en el campo temporal
+        }
+
+        // Ordenamos la lista de mayor a menor puntuación
+        // Sort va cogiendo parejas de elementos de la lista y comparandolos como definimos despues de la flecha. 
+        // Invirtiendo el orden hacemos que se ordene "de más a menos puntos"
+        usuarios.sort((u1, u2) -> Integer.compare(u2.getPuntos(), u1.getPuntos()));
+
+        return usuarios;
     }
 
 }

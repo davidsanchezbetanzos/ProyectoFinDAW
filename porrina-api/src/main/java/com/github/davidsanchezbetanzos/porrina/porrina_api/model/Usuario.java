@@ -13,26 +13,21 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.JoinColumn;
-
-
-
-
+import jakarta.persistence.Transient;
 
 //Clase Java para usuario
-@Entity //marcamos esta clase como una entidad (tabla) en la base de datos
+@Entity // marcamos esta clase como una entidad (tabla) en la base de datos
 @Table(name = "Usuario")
 public class Usuario {
-
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//relacion con entidad Equipo
-@ManyToOne
-@JoinColumn(name = "equipo_id")
-private Equipo equipo;
+    // relacion con entidad Equipo
+    @ManyToOne
+    @JoinColumn(name = "equipo_id")
+    private Equipo equipo;
 
     @NotBlank(message = "El nick es obligatorio")
     private String nick;
@@ -41,24 +36,30 @@ private Equipo equipo;
     @Email(message = "El email no tiene un formato válido")
     private String email;
 
-    public Usuario(long id, String nick, String email){
+    // Campo que no se persiste a base de datos pero lo usamos en el service para
+    // calcular la clasificacion
+    @Transient
+    private int puntos;
+
+    // Constructor con campos
+    public Usuario(long id, String nick, String email) {
         this.id = id;
         this.nick = nick;
         this.email = email;
     }
 
-      // Constructor vacío 
+    // Constructor vacío
     public Usuario() {
     }
 
-
-     // Constructor con campos
+    // Constructor con campos
     public Usuario(Long id, String nick, String email) {
         this.id = id;
         this.nick = nick;
         this.email = email;
     }
-        // Getters
+
+    // Getters
     public Long getId() {
         return id;
     }
@@ -72,12 +73,14 @@ private Equipo equipo;
     }
 
     public Equipo getEquipo() {
-    return equipo;
-}
+        return equipo;
+    }
 
+    public int getPuntos() {
+        return puntos;
+    }
 
-
-        // Setters 
+    // Setters
     public void setId(Long id) {
         this.id = id;
     }
@@ -91,7 +94,11 @@ private Equipo equipo;
     }
 
     public void setEquipo(Equipo equipo) {
-    this.equipo = equipo;
-}
+        this.equipo = equipo;
+    }
+
+    public void setPuntos(int puntos) {
+        this.puntos = puntos;
+    }
 
 }

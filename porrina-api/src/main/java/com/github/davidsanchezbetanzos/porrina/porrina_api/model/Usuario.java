@@ -3,9 +3,11 @@ package com.github.davidsanchezbetanzos.porrina.porrina_api.model;
 //validaciones
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Email;
-
+import jakarta.persistence.Column;
 //persistencia
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,12 +31,24 @@ public class Usuario {
     @JoinColumn(name = "equipo_id")
     private Equipo equipo;
 
-    @NotBlank(message = "El nick es obligatorio")
+    @Column(unique = true)   
     private String nick;
 
+    // El email será nuestro id de google para Oauth
+    @Column(unique = true)
     @NotBlank(message = "El email es obligatorio")
     @Email(message = "El email no tiene un formato válido")
     private String email;
+
+    // Guardaremos el nombre real que nos devuelva Google
+    private String nombre;
+
+    // Para diferenciar administradores, definimos un enum para que solo pueda tener 2 valores
+    public enum Rol {
+    ADMIN, USER
+}
+    @Enumerated(EnumType.STRING)
+    private Rol rol = Rol.USER; //Los usuarios tendran rol USER por defecto
 
     // Campo que no se persiste a base de datos pero lo usamos en el service para
     // calcular la clasificacion
@@ -42,22 +56,17 @@ public class Usuario {
     private int puntos;
 
     // Constructor con campos
-    public Usuario(long id, String nick, String email) {
-        this.id = id;
+    public Usuario(String nick, String email, String nombre, Rol rol) {
         this.nick = nick;
         this.email = email;
+        this.nombre = nombre;
+        this.rol = rol;
     }
 
     // Constructor vacío
     public Usuario() {
     }
 
-    // Constructor con campos
-    public Usuario(Long id, String nick, String email) {
-        this.id = id;
-        this.nick = nick;
-        this.email = email;
-    }
 
     // Getters
     public Long getId() {
@@ -80,6 +89,14 @@ public class Usuario {
         return puntos;
     }
 
+    public String getNombre() {
+        return nombre;
+    }
+
+    public Rol getRol() {
+        return rol;
+    }
+
     // Setters
     public void setId(Long id) {
         this.id = id;
@@ -99,6 +116,14 @@ public class Usuario {
 
     public void setPuntos(int puntos) {
         this.puntos = puntos;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setRol(Rol rol) {
+        this.rol = rol;
     }
 
 }

@@ -1,0 +1,19 @@
+<h2>Listado de Usuarios</h2>
+
+@if (usuarios$ | async; as listaUsuarios) {
+  
+  @if (listaUsuarios.length === 0) {
+    <p>No hay usuarios en la base de datos.</p>
+  } @else {
+    <ul>
+      @for (u of listaUsuarios; track u.id) {
+        <li>{{ u.nick || 'Sin Nick' }} - {{ u.email }}</li>
+      }
+    </ul>
+  }
+
+} @else {
+  <p>Cargando datos del servidor...</p>
+}
+
+<p>fin</p>

@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.github.davidsanchezbetanzos.porrina.porrina_api.model.Usuario;
 
 import java.util.List;
+import java.util.Optional;
 
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
@@ -15,5 +16,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     //select para sacar los usuarios que tengan un determinado equipo   
     List<Usuario> findByEquipoId(Long equipoId);
+
+     //select para sacar los usuarios que tengan un determinado equipo   
+    Optional<Usuario> findByEmail(String email);
     
 }

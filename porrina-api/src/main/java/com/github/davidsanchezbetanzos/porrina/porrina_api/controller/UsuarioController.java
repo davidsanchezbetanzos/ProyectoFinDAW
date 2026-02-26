@@ -28,11 +28,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import jakarta.validation.Valid;
 
-//CORS
-@CrossOrigin(origins = "http://localhost:4200")
+
 
 //-- ENDPOINTS
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/usuarios")
 public class UsuarioController {

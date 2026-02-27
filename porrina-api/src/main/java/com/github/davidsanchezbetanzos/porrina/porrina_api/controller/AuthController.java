@@ -35,8 +35,8 @@ public class AuthController {
 
 //endpoint para completar el registro añadiendo un nick
 @PostMapping("/completar-registro") 
-public Usuario completarRegistro(@RequestParam Long id, @RequestParam String nick) {
-    return authService.completarRegistro(id, nick);
+public Usuario completarRegistro(@RequestParam String email, @RequestParam String nick) {
+    return authService.completarRegistro(email, nick);
 }
 
 }

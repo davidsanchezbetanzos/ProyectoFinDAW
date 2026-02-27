@@ -31,7 +31,7 @@ public class Usuario {
     @JoinColumn(name = "equipo_id")
     private Equipo equipo;
 
-    @Column(unique = true)   
+    @Column(unique = true)
     private String nick;
 
     // El email será nuestro id de google para Oauth
@@ -43,12 +43,18 @@ public class Usuario {
     // Guardaremos el nombre real que nos devuelva Google
     private String nombre;
 
-    // Para diferenciar administradores, definimos un enum para que solo pueda tener 2 valores
+    // Para diferenciar administradores, definimos un enum para que solo pueda tener
+    // 2 valores
     public enum Rol {
-    ADMIN, USER
-}
+        ADMIN, USER
+    }
+
     @Enumerated(EnumType.STRING)
-    private Rol rol = Rol.USER; //Los usuarios tendran rol USER por defecto
+    private Rol rol = Rol.USER; // Los usuarios tendran rol USER por defecto
+
+    // booleano para ver si el usuario ha pagado la cuota
+
+    private boolean pagado = false; // Por defecto, nadie ha pagado
 
     // Campo que no se persiste a base de datos pero lo usamos en el service para
     // calcular la clasificacion
@@ -66,7 +72,6 @@ public class Usuario {
     // Constructor vacío
     public Usuario() {
     }
-
 
     // Getters
     public Long getId() {
@@ -97,6 +102,10 @@ public class Usuario {
         return rol;
     }
 
+    public boolean isPagado() {
+        return pagado;
+    }
+
     // Setters
     public void setId(Long id) {
         this.id = id;
@@ -124,6 +133,10 @@ public class Usuario {
 
     public void setRol(Rol rol) {
         this.rol = rol;
+    }
+
+    public void setPagado(boolean pagado) {
+        this.pagado = pagado;
     }
 
 }

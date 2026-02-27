@@ -17,7 +17,14 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     //select para sacar los usuarios que tengan un determinado equipo   
     List<Usuario> findByEquipoId(Long equipoId);
 
+    // select para buscar por nick
+    boolean existsByNick(String nick);
+
      //select para sacar los usuarios que tengan un determinado equipo   
     Optional<Usuario> findByEmail(String email);
+
+    // select para sacar si un usuario ha pagado
+
+    //boolean isPagado(Long id);
     
 }

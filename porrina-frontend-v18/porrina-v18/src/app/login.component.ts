@@ -37,10 +37,16 @@ export class LoginComponent implements OnInit {
   loginConBackend(email: string, nombre: string) {
     const url = `http://localhost:8080/api/auth/test-google?email=${email}&nombre=${nombre}`;
     this.http.get<any>(url).subscribe({
-      next: (res) => {
-        console.log('Backend OK:', res);
-        this.router.navigate(['/usuarios']);
-
+      next: (usuario) => {
+        console.log('Backend OK:', usuario);
+        if (!usuario.nick) {
+          this.router.navigate(['/completar-registro'],{
+          queryParams: { email: usuario.email }
+        });
+        }
+        else {
+      this.router.navigate(['/usuarios']);
+    }            
       },
       error: (err) => console.error('Error Backend:', err)
     });

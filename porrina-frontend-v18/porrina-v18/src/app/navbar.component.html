@@ -1,0 +1,32 @@
+<nav class="navbar">
+  <div class="logo" routerLink="/">
+    <strong>La Porriña 🏆</strong>
+  </div>
+
+  <ul class="nav-links">
+    <li><a routerLink="/home" routerLinkActive="active">Home</a></li>
+    <li><a routerLink="/clasificacion" routerLinkActive="active">Clasificación Individual</a></li>
+    <li><a routerLink="/equipos" routerLinkActive="active">Clasificación por Equipos</a></li>
+    <li><a routerLink="/jornada" routerLinkActive="active">Jornada actual</a></li>
+    <li><a routerLink="/historico" routerLinkActive="active">Histórico</a></li>
+  </ul>
+
+  <div class="auth-section">
+    <div *ngIf="user; else loginBtn" class="user-info"> <!--Si el usuario aun no existe muestra #loginBtn-->
+      <span class="badge" [ngClass]="user.pagado ? 'badge-pagado' : 'badge-pendiente'">
+    {{ user.pagado ? 'Pagado' : 'Pendiente de Pago' }}
+  </span>
+      <span *ngIf="user.rol === 'ADMIN'" class="badge badge-admin">
+    Admin
+  </span>
+      <img [src]="user.photoUrl" class="avatar" alt="User">
+      <span>{{ user.name }}</span>
+      <button (click)="logout()" class="btn-logout">Logout</button>
+    </div>
+    
+    <ng-template #loginBtn>
+      <asl-google-signin-button type="standard" size="medium" theme="outline" locale="es"></asl-google-signin-button>
+
+    </ng-template>
+  </div>
+</nav>

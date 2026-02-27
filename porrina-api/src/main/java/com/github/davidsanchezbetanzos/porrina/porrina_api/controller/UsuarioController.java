@@ -2,6 +2,7 @@ package com.github.davidsanchezbetanzos.porrina.porrina_api.controller;
 
 import com.github.davidsanchezbetanzos.porrina.porrina_api.model.Usuario;
 import com.github.davidsanchezbetanzos.porrina.porrina_api.service.UsuarioService;
+import com.github.davidsanchezbetanzos.porrina.porrina_api.repository.UsuarioRepository;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,6 +17,8 @@ import java.util.List;
 
 //pasar variables desde la URL
 import org.springframework.web.bind.annotation.PathVariable;
+
+//metodos rest
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,9 +26,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
-//metodos post
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+
 import jakarta.validation.Valid;
 
 
@@ -38,9 +39,11 @@ import jakarta.validation.Valid;
 public class UsuarioController {
 
     private final UsuarioService usuarioService;
+    private final UsuarioRepository usuarioRepository;
 
-    public UsuarioController(UsuarioService usuarioService) {
+    public UsuarioController(UsuarioService usuarioService, UsuarioRepository usuarioRepository) {
         this.usuarioService = usuarioService;
+        this.usuarioRepository = usuarioRepository;
     }
 //-- GET LISTADO DE USUARIOS /api/usuarios
     @GetMapping
@@ -68,6 +71,8 @@ public class UsuarioController {
         return usuarioService.crearUsuario(usuario);
     }
 
+
+
 //-- DELETE USUARIO /api/usuarios/{id} (EN EL BODY VA EL ID)
 
 @DeleteMapping("/{id}")
@@ -83,6 +88,24 @@ public Usuario actualizarUsuario(
         @Valid @RequestBody Usuario usuarioActualizado
 ) {
     return usuarioService.actualizarUsuario(id, usuarioActualizado);
+}
+
+//-- TOGGLE PARA CAMBIAR EL ESTADO "PAGADO" - "PENDIENTE DE PAGO"
+
+@PutMapping("/{id}/toggle-pago")
+public Usuario togglePago(@PathVariable Long id) {
+    Usuario user = usuarioRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+    
+    user.setPagado(!user.isPagado()); // Si es false lo pone a true, y viceversa
+    return usuarioRepository.save(user);
+}
+
+// sacar el objeto usuario buscando por email
+@GetMapping("/perfil/{email}")
+public Usuario obtenerPerfil(@PathVariable String email) {
+    return usuarioRepository.findByEmail(email)
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 }
 
 }

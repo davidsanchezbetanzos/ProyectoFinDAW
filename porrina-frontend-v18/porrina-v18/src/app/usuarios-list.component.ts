@@ -7,8 +7,8 @@ import { Observable } from 'rxjs';
   selector: 'app-usuarios-list',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './usuarios-list.html',
-  styleUrl: './usuarios-list.css',
+  templateUrl: './usuarios-list.component.html',
+  styleUrl: './usuarios-list.component.css',
 })
 export class UsuariosList implements OnInit{
   usuarios$!: Observable<any[]>;

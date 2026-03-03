@@ -7,6 +7,7 @@ import { HistoricoJornadaComponent } from './historico-jornada.component';
 import { LoginComponent } from './login.component';
 import { CompletarRegistroComponent } from './completar-registro.component';
 import { UsuariosList } from './usuarios-list.component';
+import { AdminPanelComponent } from './admin-panel.component';
 
 export const routes: Routes = [
 
@@ -18,6 +19,7 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'completar-registro', component: CompletarRegistroComponent },
   { path: 'usuarios', component: UsuariosList },
-  { path: '', redirectTo: 'home', pathMatch: 'full' }, // Ahora la raíz es Home
+  { path: 'admin-panel', component: AdminPanelComponent },
+  { path: '', redirectTo: 'home', pathMatch: 'full' }, 
   { path: '**', redirectTo: 'home' }
 ];

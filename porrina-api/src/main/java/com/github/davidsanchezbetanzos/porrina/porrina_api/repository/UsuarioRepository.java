@@ -14,6 +14,10 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     //lo mismo con el email
     boolean existsByEmail(String email);
 
+    //sacar todos los usuarios ordenados por ID
+     List<Usuario> findAllByOrderByIdAsc();
+
+
     //select para sacar los usuarios que tengan un determinado equipo   
     List<Usuario> findByEquipoId(Long equipoId);
 

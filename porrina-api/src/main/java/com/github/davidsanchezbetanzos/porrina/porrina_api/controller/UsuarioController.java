@@ -45,11 +45,14 @@ public class UsuarioController {
         this.usuarioService = usuarioService;
         this.usuarioRepository = usuarioRepository;
     }
-//-- GET LISTADO DE USUARIOS /api/usuarios
+//-- GET LISTADO DE USUARIOS del repository 
     @GetMapping
-    public List<Usuario> getUsuarios() {
-        return usuarioService.obtenerUsuarios();
+    public List<Usuario> listarTodos() {
+        return usuarioRepository.findAllByOrderByIdAsc();
     }
+
+
+
 //-- GET USUARIO POR ID /api/usuarios/{id}
     @GetMapping("/{id}")
     public Usuario getUsuarioPorId(@PathVariable Long id) {
@@ -73,7 +76,7 @@ public class UsuarioController {
 
 
 
-//-- DELETE USUARIO /api/usuarios/{id} (EN EL BODY VA EL ID)
+//-- DELETE USUARIO /api/usuarios/{id} (Sacamos el id de pathvariable)
 
 @DeleteMapping("/{id}")
 @ResponseStatus(HttpStatus.NO_CONTENT)

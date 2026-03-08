@@ -23,7 +23,7 @@ public class Jornada {
     private LocalDateTime fechafin;
 
     @Enumerated(EnumType.STRING)
-    private EstadoJornada estado = EstadoJornada.PLANIFICADA;
+    public EstadoJornada estado = EstadoJornada.PLANIFICADA;
 
 
     public enum EstadoJornada {

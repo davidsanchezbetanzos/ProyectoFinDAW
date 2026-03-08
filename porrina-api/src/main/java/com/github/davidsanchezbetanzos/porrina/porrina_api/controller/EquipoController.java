@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("api/equipos")
 public class EquipoController {
@@ -26,6 +26,11 @@ public EquipoController(EquipoService equipoService) {
    @GetMapping
     public List<Equipo> obtenerEquipos() {
         return equipoService.obtenerEquipos();
+    }
+
+    @GetMapping("/clasificacion")
+    public List<Equipo> getClasificacionEquipos() {
+        return equipoService.obtenerClasificacionEquipos();
     }
 
      @GetMapping("/{id}")

@@ -26,10 +26,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
-
 import jakarta.validation.Valid;
-
-
 
 //-- ENDPOINTS
 
@@ -45,15 +42,21 @@ public class UsuarioController {
         this.usuarioService = usuarioService;
         this.usuarioRepository = usuarioRepository;
     }
-//-- GET LISTADO DE USUARIOS del repository 
+
+    // -- GET LISTADO DE USUARIOS del repository
     @GetMapping
     public List<Usuario> listarTodos() {
         return usuarioRepository.findAllByOrderByIdAsc();
     }
 
+    // GET CLASIFICACION (LISTA DE USUARIOS ORDENADOS CON SUS PUNTOS)
 
+    @GetMapping("/clasificacion")
+    public List<Usuario> getClasificacion() {
+        return usuarioService.obtenerClasificacion();
+    }
 
-//-- GET USUARIO POR ID /api/usuarios/{id}
+    // -- GET USUARIO POR ID /api/usuarios/{id}
     @GetMapping("/{id}")
     public Usuario getUsuarioPorId(@PathVariable Long id) {
 
@@ -67,48 +70,47 @@ public class UsuarioController {
         return usuario;
     }
 
-//-- POST USUARIO /api/usuarios/ (EN EL BODY VA EL USUARIO)
+        // sacar el objeto usuario buscando por email
+    @GetMapping("/perfil/{email}")
+    public Usuario obtenerPerfil(@PathVariable String email) {
+        return usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado"));
+    }
+
+    // -- POST USUARIO /api/usuarios/     
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Usuario crearUsuario(@Valid @RequestBody Usuario usuario) {
         return usuarioService.crearUsuario(usuario);
     }
 
+    // -- DELETE USUARIO /api/usuarios/{id} (Sacamos el id de pathvariable)
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void eliminarUsuario(@PathVariable Long id) {
+        usuarioService.eliminarUsuario(id);
+    }
+
+    // -- PUT (UPDATE) USUARIO
+    @PutMapping("/{id}")
+    public Usuario actualizarUsuario(
+            @PathVariable Long id,
+            @Valid @RequestBody Usuario usuarioActualizado) {
+        return usuarioService.actualizarUsuario(id, usuarioActualizado);
+    }
+
+    // -- TOGGLE PARA CAMBIAR EL ESTADO "PAGADO" - "PENDIENTE DE PAGO"
+
+    @PutMapping("/{id}/toggle-pago")
+    public Usuario togglePago(@PathVariable Long id) {
+        Usuario user = usuarioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        user.setPagado(!user.isPagado()); // Si es false lo pone a true, y viceversa
+        return usuarioRepository.save(user);
+    }
 
 
-//-- DELETE USUARIO /api/usuarios/{id} (Sacamos el id de pathvariable)
-
-@DeleteMapping("/{id}")
-@ResponseStatus(HttpStatus.NO_CONTENT)
-public void eliminarUsuario(@PathVariable Long id) {
-    usuarioService.eliminarUsuario(id);
-} 
-
-//-- PUT (UPDATE) USUARIO 
-@PutMapping("/{id}")
-public Usuario actualizarUsuario(
-        @PathVariable Long id,
-        @Valid @RequestBody Usuario usuarioActualizado
-) {
-    return usuarioService.actualizarUsuario(id, usuarioActualizado);
-}
-
-//-- TOGGLE PARA CAMBIAR EL ESTADO "PAGADO" - "PENDIENTE DE PAGO"
-
-@PutMapping("/{id}/toggle-pago")
-public Usuario togglePago(@PathVariable Long id) {
-    Usuario user = usuarioRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-    
-    user.setPagado(!user.isPagado()); // Si es false lo pone a true, y viceversa
-    return usuarioRepository.save(user);
-}
-
-// sacar el objeto usuario buscando por email
-@GetMapping("/perfil/{email}")
-public Usuario obtenerPerfil(@PathVariable String email) {
-    return usuarioRepository.findByEmail(email)
-            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-}
 
 }

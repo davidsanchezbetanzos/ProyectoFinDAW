@@ -1,3 +1,96 @@
+<div class="admin-container">
+  <h2>⚙️ Panel de Administración</h2>
+
+  <section class="admin-card">
+    <h3>📅 Crear Nueva Jornada</h3>
+    
+    <div class="date-group">
+      <div>
+        <label>Fecha y Hora Inicio:</label>
+        <input type="datetime-local" [(ngModel)]="nuevaJornada.fechaini" class="form-control">
+      </div>
+      <div>
+        <label>Fecha y Hora Fin:</label>
+        <input type="datetime-local" [(ngModel)]="nuevaJornada.fechafin" class="form-control">
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="matches-grid">
+      @for (p of nuevaJornada.partidos; track $index; let i = $index) {
+        <div class="match-box">
+          <h4>Partido {{ i + 1 }}</h4>
+          <input type="text" [(ngModel)]="p.equipolocal" placeholder="Equipo Local" class="form-control">
+          <span class="vs">vs</span>
+          <input type="text" [(ngModel)]="p.equipovisitante" placeholder="Equipo Visitante" class="form-control">
+        </div>
+      }
+    </div>
+
+    <button (click)="crearJornada()" class="btn-save">🚀 Publicar Jornada</button>
+  </section>
+
+  </div>
+
+  <section class="admin-card">
+  <h3>📋 Gestión de Jornadas</h3>
+  
+  <div class="table-responsive">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Estado</th>
+          <th>Inicio / Fin</th>
+          <th>Partidos (Local vs Visitante)</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (j of jornadas; track j.id) {
+          <tr [class.row-activa]="j.estado === 'ACTIVA'">
+            <td><strong>#{{ j.id }}</strong></td>
+            <td>
+              <span class="badge" [ngClass]="'badge-' + j.estado.toLowerCase()">
+                {{ j.estado }}
+              </span>
+            </td>
+            <td>
+              <div class="date-info">
+                <span>{{ j.fechaini | date:'dd/MM HH:mm' }}</span>
+                <span class="date-sep">→</span>
+                <span>{{ j.fechafin | date:'dd/MM HH:mm' }}</span>
+              </div>
+            </td>
+            <td>
+              <ul class="partidos-mini-list">
+                @for (p of j.partidos; track p.id) {
+                  <li>
+                    {{ p.equipolocal }} 
+                    <span class="vs-text">vs</span> 
+                    {{ p.equipovisitante }}
+                    @if (j.estado === 'JUGADA') {
+                      <span class="score">({{ p.goleslocal }} - {{ p.golesvisitante }})</span>
+                    }
+                  </li>
+                }
+              </ul>
+            </td>
+            <td>
+              <p> boton eliminar jornada</p>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="5" class="text-center">No hay jornadas creadas.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</section>
+
 <div style="padding: 2rem;">
   <h2>👥 Gestión de Participantes</h2>
 

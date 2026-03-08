@@ -1,4 +1,42 @@
-<div style="padding: 2rem;">
-      <h2>👥 Clasificación por Equipos</h2>
-      <p>Próximamente: Ranking de las peñas y grupos.</p>
+<div class="container">
+  <div class="header-section">
+    <h2>Clasificación por Equipos</h2>
+   
+  </div>
+
+  @if (cargando) {
+    <div class="loader">Cargando clasificación...</div>
+  } @else {
+    <div class="table-container">
+      <table class="ranking-table">
+        <thead>
+          <tr>
+            <th class="pos">Pos</th>
+            <th>Equipo</th>
+            <th class="text-center">Participantes</th>
+            <th class="pts">Puntos Totales</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (e of equipos; track e.id; let i = $index) {
+            <tr [class.podium]="i < 3">
+              <td class="pos">
+                @if (i === 0) { 🥇 }
+                @else if (i === 1) { 🥈 }
+                @else if (i === 2) { 🥉 }
+                @else { {{ i + 1 }} }
+              </td>
+              <td>
+                <span class="team-name">{{ e.nombre }}</span>
+              </td>
+              <td class="text-center">
+                <span class="member-count">👤 {{ e.numParticipantes }}</span>
+              </td>
+              <td class="pts-value">{{ e.puntosTotales }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
     </div>
+  }
+</div>

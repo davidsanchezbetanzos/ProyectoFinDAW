@@ -1,14 +1,19 @@
 package com.github.davidsanchezbetanzos.porrina.porrina_api.service;
 
 import com.github.davidsanchezbetanzos.porrina.porrina_api.model.Jornada;
+import com.github.davidsanchezbetanzos.porrina.porrina_api.model.Jornada.EstadoJornada;
 import com.github.davidsanchezbetanzos.porrina.porrina_api.model.Partido;
 import com.github.davidsanchezbetanzos.porrina.porrina_api.repository.JornadaRepository;
 import com.github.davidsanchezbetanzos.porrina.porrina_api.repository.PartidoRepository;
+
+import jakarta.transaction.Transactional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -88,4 +93,61 @@ public class JornadaService {
         
         return jornadaRepository.save(jornadaExistente);
     }
+
+    // Lógica automática, comprueba cual es la jornada en estado planificada más cercana a la fecha actual.
+    // Se lanzará cada x tiempo con el scheduler
+    @Transactional
+    public void actualizarJornadaActivaAutomatica() {
+        LocalDateTime ahora = LocalDateTime.now();
+
+        // Buscamos todas las planificadas
+        List<Jornada> planificadas = jornadaRepository.findByEstado(EstadoJornada.PLANIFICADA);
+
+        if (planificadas.isEmpty()) return;
+
+        // Buscamos la más cercana al futuro (ordenadas por fechaini)
+        Jornada proxima = planificadas.stream()
+                .filter(j -> j.getFechaini().isAfter(ahora))
+                .min(Comparator.comparing(Jornada::getFechaini))
+                .orElse(null); 
+
+        if (proxima != null) {
+            // Opcional: Ponemos todas las demás 'ACTIVA' a 'PLANIFICADA' para que solo haya una
+            List<Jornada> actualesActivas = jornadaRepository.findByEstado(EstadoJornada.ACTIVA);
+            actualesActivas.forEach(j -> j.setEstado(EstadoJornada.PLANIFICADA));
+
+            proxima.setEstado(EstadoJornada.ACTIVA);
+            jornadaRepository.save(proxima);
+            System.out.println(">> Sistema: Jornada #" + proxima.getId() + " activada automáticamente.");
+        }
+    }
+
+    // LÓGICA MANUAL: 
+    // Este lo usaremos cuando hagamos la pantalla de meter resultados para pasar la jornada a estado "JUGADA"
+    @Transactional
+public Jornada registrarResultados(Long jornadaId, List<Partido> partidosConGoles) {
+    // Buscamos la jornada
+    Jornada jornada = jornadaRepository.findById(jornadaId)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Jornada no encontrada"));
+
+    // Actualizamos los goles de cada partido
+    // Recorremos los partidos que nos llegan del frontend
+    for (Partido pEnviado : partidosConGoles) {
+        // Buscamos el partido real en la base de datos para asegurar que existe
+        partidoRepository.findById(pEnviado.getId()).ifPresent(pReal -> {
+            pReal.setGoleslocal(pEnviado.getGoleslocal());
+            pReal.setGolesvisitante(pEnviado.getGolesvisitante());
+            partidoRepository.save(pReal);
+        });
+    }
+
+    // Cambiamos el estado de la jornada a JUGADA
+    jornada.setEstado(Jornada.EstadoJornada.JUGADA);    
+  
+
+    return jornadaRepository.save(jornada);
+}
+
+
+
 }

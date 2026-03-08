@@ -9,6 +9,8 @@ import { CompletarRegistroComponent } from './completar-registro.component';
 import { UsuariosList } from './usuarios-list.component';
 import { AdminPanelComponent } from './admin-panel.component';
 
+import { adminGuard } from './admin-guard';
+
 export const routes: Routes = [
 
 { path: 'home', component: HomeComponent },
@@ -19,7 +21,7 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'completar-registro', component: CompletarRegistroComponent },
   { path: 'usuarios', component: UsuariosList },
-  { path: 'admin-panel', component: AdminPanelComponent },
+  { path: 'admin-panel', component: AdminPanelComponent, canActivate: [adminGuard] },
   { path: '', redirectTo: 'home', pathMatch: 'full' }, 
   { path: '**', redirectTo: 'home' }
 ];

@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,9 @@ public class Equipo {
 
     @NotBlank(message = "El nombre de equipo es obligatorio")
     private String nombre;
+
+    @Transient
+    private int puntosTotales;
 
     @JsonIgnore //quitar cuando implementemos DTO
     @OneToMany(mappedBy = "equipo")
@@ -53,6 +57,10 @@ public class Equipo {
         return nombre;
     }
 
+    public int getPuntosTotales(){
+        return puntosTotales;
+    }
+
     // Setters
     public void setId(Long id) {
         this.id = id;
@@ -60,6 +68,10 @@ public class Equipo {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public void setPuntosTotales(int puntos){
+        this.puntosTotales = puntos;
     }
 
 }

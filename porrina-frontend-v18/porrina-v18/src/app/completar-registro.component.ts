@@ -46,7 +46,7 @@ export class CompletarRegistroComponent {
   const url = `http://localhost:8080/api/auth/completar-registro?email=${emailEnc}&nick=${nickEnc}`;
 
   this.http.post(url, {}).subscribe({ 
-    next: () => this.router.navigate(['/usuarios']),
+    next: () => this.router.navigate(['/home']),
     error: (err) => {
         if (err.status === 409) {
         alert('Ese nick ya está pillado, ¡busca otro!');

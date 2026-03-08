@@ -15,9 +15,10 @@ export const appConfig: ApplicationConfig = {
         providers: [
           {
             id: GoogleLoginProvider.PROVIDER_ID,
-            provider: new GoogleLoginProvider(
-              '1026255159702-eh1051h1u9eg98l3udcnogl9t6ifpv6t.apps.googleusercontent.com'
-            )
+            provider: new GoogleLoginProvider('1026255159702-eh1051h1u9eg98l3udcnogl9t6ifpv6t.apps.googleusercontent.com', {
+              oneTapEnabled: false, // desactiva el flotante
+              prompt: '' //  evita que Google fuerce el selector de cuenta
+            })
           }
         ],
         onError: (err) => console.error(err)

@@ -14,7 +14,7 @@ public class Pronostico {
 
     @ManyToOne //varios pronosticos se asignan a 1 usuario
     @JoinColumn(name = "usuario_id", nullable = false) //join con usuario. no puede ser null
-    @JsonIgnoreProperties({"pronosticos", "password"}) //para evitar json infinitos
+    @JsonIgnoreProperties({"pronosticos", "password","equipo", "rol"}) //para evitar json infinitos
     private Usuario usuario;
 
     @ManyToOne //varios pronosticos de diferentes usuarios corresponden a 1 partido

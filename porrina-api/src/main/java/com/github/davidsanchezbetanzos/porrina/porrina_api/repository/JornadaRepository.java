@@ -12,4 +12,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface JornadaRepository extends JpaRepository<Jornada, Long> {
     
      List<Jornada> findByEstado(EstadoJornada estado);
+
+     List<Partido> findByPartidos_Jornada_Id (Long jornada);
 }

@@ -19,14 +19,13 @@ public class JornadaScheduler {
     @EventListener(ApplicationReadyEvent.class)
     public void ejecutarAlInicio() {
         System.out.println(">> Sistema: App lista. Ejecutando comprobación inicial de jornadas...");
-        jornadaService.actualizarJornadaActivaAutomatica();
+        jornadaService.actualizarEstadosAutomaticos();
     }
 
     // Se ejecuta cada hora para revisar si hay que activar la siguiente jornada
     // Cron: segundos minutos horas día mes día_semana
-    @Scheduled(cron = "0 0 * * * *") 
-    public void revisarCambioDeEstado() {
-        System.out.println(">> Scheduler: Revisando jornadas para activación automática...");
-        jornadaService.actualizarJornadaActivaAutomatica();
-    }
+   @Scheduled(cron = "0 0 * * * *") 
+public void revisarCambioDeEstado() {
+    jornadaService.actualizarEstadosAutomaticos();
+}
 }

@@ -14,11 +14,40 @@ export class AdminPanelComponent implements OnInit {
     private http = inject(HttpClient);
   usuarios: any[] = [];
   jornadas: any[] = [];
+  jornadaACerrar: any = null;
 
   ngOnInit() {
+    this.cargarJornadaParaCierre();
     this.cargarUsuarios();
     this.obtenerJornadas();
   }
+
+  cargarJornadaParaCierre() {
+  this.http.get<any>('http://localhost:8080/api/jornadas/activa')
+    .subscribe({
+      next: (j) => {
+        this.jornadaACerrar = j;
+        console.log("Jornada lista para cerrar:", j);
+      },
+      error: () => console.log("No hay ninguna jornada activa para cerrar ahora mismo.")
+    });
+}
+
+finalizarJornada() {
+  if (!confirm('¿Estás seguro? Esto calculará los puntos de todos los usuarios.')) return;
+
+  // Cambiamos el estado a JUGADA antes de enviar
+  this.jornadaACerrar.estado = 'JUGADA';
+
+  this.http.put(`http://localhost:8080/api/jornadas/${this.jornadaACerrar.id}`, this.jornadaACerrar)
+    .subscribe({
+      next: () => {
+        alert('Resultados guardados y jornada finalizada.');
+        this.jornadaACerrar = null; // Limpiamos la vista
+      },
+      error: (err) => alert('Error al guardar resultados')
+    });
+}
 
   cargarUsuarios() {
     this.http.get<any[]>('http://localhost:8080/api/usuarios')

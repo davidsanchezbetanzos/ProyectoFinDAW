@@ -21,7 +21,7 @@ public class Partido {
     @JoinColumn(name = "jornada_id", nullable = false)
     @JsonIgnoreProperties("partidos")
     @NotNull(message = "El partido debe estar asociado a una jornada")
-    private Jornada jornada_id;
+    private Jornada jornada;
 
     @NotBlank(message = "El equipo local es obligatorio")
     private String equipolocal;
@@ -61,8 +61,8 @@ public class Partido {
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
-    public Jornada getJornada() { return jornada_id; }
-    public void setJornada(Jornada jornada) { this.jornada_id = jornada; }
+    public Jornada getJornada() { return jornada; }
+    public void setJornada(Jornada jornada) { this.jornada = jornada; }
 
     public String getEquipolocal() { return equipolocal; }
     public void setEquipolocal(String equipolocal) { this.equipolocal = equipolocal; }

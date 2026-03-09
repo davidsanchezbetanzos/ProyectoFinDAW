@@ -1,4 +1,61 @@
-<div style="padding: 2rem;">
-      <h2>⚽ Jornada Actual</h2>
-      <p>Aquí podrás ver los partidos de esta semana y marcar tus pronósticos.</p>
-    </div>
+<div class="container">
+  
+  @if (jornadaActiva) {
+    <section class="card-pronosticos">
+      <div class="header-jornada">
+        <h2>⚽ Jornada Actual #{{jornadaActiva.id}}</h2>
+        <span class="fecha-limite">Cierre: {{jornadaActiva.fechaini | date:'short'}}</span>
+      </div>
+
+      @if (user && user.pagado) {
+        <div class="partidos-grid">
+          @for (pr of pronosticosUsuario; track $index) {
+            <div class="partido-row">
+              <span class="team-name">{{pr.partido.equipolocal}}</span>
+              <div class="inputs-goles">
+                <input type="number" [(ngModel)]="pr.golesLocal" min="0">
+                <span class="vs">-</span>
+                <input type="number" [(ngModel)]="pr.golesVisitante" min="0">
+              </div>
+              <span class="team-name">{{pr.partido.equipovisitante}}</span>
+            </div>
+          }
+        </div>
+        <button class="btn-save" (click)="guardarPronosticos()">💾 Guardar mi apuesta</button>
+      } @else if (user && !user.pagado) {
+        <div class="alerta-pago">
+          ⚠️ <strong>Atención:</strong> Debes estar al día con el pago (1€) para poder participar esta jornada.
+        </div>
+      } @else {
+        <p class="login-msg">Haz login para participar en La Porriña.</p>
+      }
+    </section>
+
+    <section class="muro-pronosticos">
+      <h3>🌍 Muro de Pronósticos</h3>
+      <table class="tabla-muro">
+        <thead>
+  <tr>
+    <th>Usuario</th>
+    @for (p of jornadaActiva?.partidos; track p.id) {
+      <th>{{p.equipolocal}} - {{p.equipovisitante}}</th>
+    }
+  </tr>
+</thead>
+        <tbody>
+          @for (item of todosLosPronosticos; track item.usuarioId) {
+            <tr>
+              <td><strong>{{item.nombre}}</strong></td>
+              @for (p of item.apuestas; track p.id) {
+                <td>{{p.golesLocal}} - {{p.golesVisitante}}</td>
+              }
+            </tr>
+          }
+        </tbody>
+      </table>
+    </section>
+  } @else {
+    <div class="no-jornada">No hay ninguna jornada activa en este momento.</div>
+  }
+
+</div>

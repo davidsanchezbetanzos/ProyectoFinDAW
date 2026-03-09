@@ -1,0 +1,79 @@
+.card-pronosticos {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  margin-bottom: 30px;
+}
+
+.header-jornada {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #004b93;
+  margin-bottom: 20px;
+}
+
+.partidos-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.partido-row {
+  display: grid;
+  grid-template-columns: 1fr 120px 1fr;
+  align-items: center;
+  text-align: center;
+  padding: 10px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.inputs-goles {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+}
+
+.inputs-goles input {
+  width: 45px;
+  height: 45px;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.btn-save {
+  width: 100%;
+  margin-top: 20px;
+  padding: 12px;
+  background: #27ae60;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.alerta-pago {
+  background: #fff3cd;
+  color: #856404;
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.tabla-muro {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.tabla-muro th { background: #004b93; color: white; padding: 10px; }
+.tabla-muro td { padding: 10px; border-bottom: 1px solid #eee; text-align: center; }

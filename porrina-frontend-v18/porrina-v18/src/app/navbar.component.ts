@@ -44,6 +44,8 @@ export class NavbarComponent implements OnInit {
             this.user = { ...googleUser, ...dbUser };
             console.log('Usuario completo cargado:', this.user);
             localStorage.setItem('user_porrina', JSON.stringify(this.user)); //lo guardamos en localStorage
+            this.router.navigate(['/home']); //redirect al home
+            
           },
           error: (err) => {
             if (err.status === 404) {
@@ -53,6 +55,7 @@ export class NavbarComponent implements OnInit {
             this.user = googleUser; // Si no carga la peticion get a BD, al menos dejamos los datos de Google
           }
         });
+        
 
 
         

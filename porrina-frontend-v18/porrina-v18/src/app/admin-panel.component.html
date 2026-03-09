@@ -1,6 +1,29 @@
 <div class="admin-container">
   <h2>⚙️ Panel de Administración</h2>
 
+  <section class="cierre-jornada" *ngIf="jornadaACerrar">
+  <h2>🏆 Cerrar Jornada #{{jornadaACerrar.id}}</h2>
+  <p>Introduce los resultados reales para calcular los puntos.</p>
+
+  <div class="partidos-resultados">
+    <div *ngFor="let p of jornadaACerrar.partidos" class="fila-resultado">
+      <span class="equipo">{{p.equipolocal}}</span>
+      <div class="inputs-goles">
+        <input type="number" [(ngModel)]="p.goleslocal" placeholder="0">
+        <span>-</span>
+        <input type="number" [(ngModel)]="p.golesvisitante" placeholder="0">
+      </div>
+      <span class="equipo">{{p.equipovisitante}}</span>
+    </div>
+  </div>
+
+  <div class="acciones-cierre">
+    <button class="btn-finalizar" (click)="finalizarJornada()">
+      ✅ Finalizar Jornada y Repartir Puntos
+    </button>
+  </div>
+</section>
+
   <section class="admin-card">
     <h3>📅 Crear Nueva Jornada</h3>
     

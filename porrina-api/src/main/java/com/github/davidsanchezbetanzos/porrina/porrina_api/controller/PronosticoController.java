@@ -2,6 +2,9 @@ package com.github.davidsanchezbetanzos.porrina.porrina_api.controller;
 
 import com.github.davidsanchezbetanzos.porrina.porrina_api.model.Pronostico;
 import com.github.davidsanchezbetanzos.porrina.porrina_api.service.PronosticoService;
+
+import jakarta.transaction.Transactional;
+
 import com.github.davidsanchezbetanzos.porrina.porrina_api.repository.PronosticoRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +15,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/pronosticos")
-@CrossOrigin(origins = "*") // Para que Angular no tenga problemas de CORS
+@CrossOrigin(origins = "http://localhost:4200") // Para que Angular no tenga problemas de CORS
 public class PronosticoController {
     private final PronosticoService pronosticoService;
     private final PronosticoRepository pronosticoRepository;
@@ -32,13 +35,36 @@ public Pronostico obtenerPorUsuarioYPartido(@PathVariable Long usuarioId, @PathV
 }
 
 
+    //Sacar los pronosticos de un usuario para toda la jornada
+    @Transactional
+    @GetMapping("/usuario/{usuarioId}/jornada/{jornadaId}")
+    public List<Pronostico> obtenerMisPronosticos(
+            @PathVariable Long usuarioId, 
+            @PathVariable Long jornadaId) {
+        return pronosticoService.obtenerPronosticosUsuarioEnJornada(usuarioId, jornadaId);
+    }
+
+    //sacar todos los pronosticos de una jornada
+    @Transactional
+    @GetMapping("/jornada/{jornadaId}/todos")
+public List<Pronostico> obtenerTodosLosDeLaJornada(@PathVariable Long jornadaId) {    
+    return pronosticoRepository.findByPartido_Jornada_Id(jornadaId);
+}
+
    //Crear un nuevo pronóstico
     @PostMapping
     public Pronostico crear(@RequestBody Pronostico pronostico) {
         return pronosticoService.guardar(pronostico);
     }
 
-    //Modificar un pronostico existente (solo si el partido esta en estado activa)
+//Guardar los 3 pronosticos de la jornada juntos
+    @CrossOrigin(origins = "http://localhost:4200") 
+@PostMapping("/guardar-varios")
+public List<Pronostico> guardarVarios(@RequestBody List<Pronostico> pronosticos) {
+    return pronosticoService.guardarVarios(pronosticos);
+}
+
+    //Modificar un pronostico existente (solo si la jornada esta en estado activa)
 
     @PutMapping("/{id}")
 public Pronostico actualizar(@PathVariable Long id, @RequestBody Pronostico pronosticoActualizado) {

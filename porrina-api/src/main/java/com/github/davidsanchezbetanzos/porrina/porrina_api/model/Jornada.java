@@ -29,13 +29,15 @@ public class Jornada {
     public enum EstadoJornada {
         PLANIFICADA, //Planificada pero no activa
         ACTIVA,   // Se pueden crear pronósticos
+        EN_CURSO, // Partidos jugandose 
         JUGADA,   // Partidos terminados, puntos calculados
         CANCELADA //jornada cancelada
     }
 
     // Relación OneToMany: Una jornada tiene muchos partidos.
     // mappedBy indica que la relación se gestiona en el atributo "jornada" de la clase Partido.
-    @OneToMany(mappedBy = "jornada_id", cascade = CascadeType.ALL, orphanRemoval = true)
+    // fetch eager se asegura que cuando se devuelve la jornada va con todos sus partidos
+    @OneToMany(mappedBy = "jornada", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
     @JsonIgnoreProperties("jornada")
     private List<Partido> partidos = new ArrayList<>();
 

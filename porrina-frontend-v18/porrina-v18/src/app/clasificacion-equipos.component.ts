@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './clasificacion-equipos.component.html',
-  styleUrl: './clasificacion-equipos.component.css' // Puedes reutilizar el CSS de la individual
+  styleUrl: './clasificacion-equipos.component.css' 
 })
 export class ClasificacionEquiposComponent implements OnInit {
   private http = inject(HttpClient);
